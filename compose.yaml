@@ -9,4 +9,12 @@ services:
     environment:
       - APP_VERSION=1.0.2
       - TOKEN=${TOKEN}
+    env_file:
+      - ./vars/dev.env
+    configs: 
+      - source: my_config
+        target: /app/config-dev.yaml
 
+configs:
+  my_config:
+    file: ./config-dev.yaml
