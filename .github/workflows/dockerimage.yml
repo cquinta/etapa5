@@ -1,11 +1,6 @@
 name: Docker Image CI
 
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - "v*.*.*"
+on: workflow_call
   
 
 jobs:
