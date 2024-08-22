@@ -1,8 +1,12 @@
 # Orquestrando o deploy de uma Aplicação/Arquitetura no DockerHost
 
+Ao invés de subir o container utilizando o client de linha de comando do docker, vamos utilizar o docker compose, que nos permitirá subir a aplicação de foram orquestrada possibilitando adicionar outros componentes (containers) e outras configurações.
+
 ## O primeiro arquivo compose.yaml
 
-Na raiz do seu repositório crie um arquivo chamado compose.yaml. Vamos subir a aplicação que acabamos de criar na etapa anterior através do docker-compose.
+Neste primeiro arquivo, o objetivo é obter um resultado semelhante ao que obteríamos através da linha de comando do cliente docker, utilizando o docker compose. 
+
+Na raiz do seu repositório crie um arquivo chamado compose.yaml. Vamos subir a aplicação que acabamos de criar na etapa anterior através do docker compose.
 
 O arquivo deve ter o conteúdo similar ao seguinte: 
 
@@ -18,18 +22,19 @@ services:
 
 ```
 
-Para facilitar estamos incluindo o instrução build para que a imagem seja construida localmente. 
+Para facilitar estamos incluindo o instrução build para que a imagem seja construida localmente.
+
 Para fazer o deploy no dockerhost execute o comando: 
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 O resultado deve ser semelhante ao seguinte: 
 
 ```bash
 
-docker-compose up --build
+docker compose up --build
 [+] Building 10.7s (13/13) FINISHED                                                                                                                                                   docker-container:container
  => [server internal] load build definition from Dockerfile                                                                                                                                                0.0s
  => => transferring dockerfile: 271B                                                                                                                                                                        0.0s
@@ -52,12 +57,13 @@ Teste o acesso através do comando curl localhost:8000.
 * Utilize o comando docker container ls e verifique o container com o nome do repositório e do serviço concatenados. 
 * Verifique a criação da rede específica onde a aplicação vai rodar. 
 
-Termine o deploy através do ctrl-c e depois docker-compose down
+Termine o deploy através do ctrl-c e depois docker compose down 
 
-## Enclusão de variáveis de ambiente:
+## Inclusão de variáveis de ambiente:
 ### Através da instrução environment
 
-No docker-compose
+No compose.yaml
+
 ```bash
 environment:
       - APP_VERSION=1.0.2
@@ -77,7 +83,7 @@ async def variaveis():
 
 ```
 
-Faça o teste ```bash curl localhost:8000/variaveis``` primeiro sem criar a variável TOKEN e depois criando através do ``` export TOKEN=<valor> ``` 
+Faça o teste ```bash curl localhost:8000/variaveis``` primeiro sem criar a variável TOKEN e depois criando através do comando ``` export TOKEN=<valor> ``` 
 
 ### Através de arquivo de variáveis de ambiente
 
@@ -107,6 +113,8 @@ async def variaveis():
     return {"variaveis": variaveis}
 
 ```
+Agora faça o teste novamente através do comando ``` curl localhost:8000/variaveis```
+
 ## Arquivos de Configuração
 
 Crie na raiz do seu projeto o arquivo config-dev.yaml
@@ -128,7 +136,7 @@ No app.py
 ```bash
 variaveis['CONFIG'] = open('/app/config-dev.yaml', "r").read()
 ```
-
+Agora faça o teste novamente através do comando ``` curl localhost:8000/variaveis```
 
 ## Secrets
 
@@ -153,6 +161,7 @@ No app.py
 ```bash
 variaveis['API_KEY'] = open('/run/secrets/api_key', "r").read()
 ```
+Agora faça o teste novamente através do comando ``` curl localhost:8000/variaveis```
 
 **OBS** Não esqueça de incluir o api_key.txt no seu .gitignore para que ele não vá para o repositório no github. 
 

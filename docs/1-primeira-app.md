@@ -52,7 +52,7 @@ Os comandos abaixo criarão e ativarão um ambiente virtual python para programa
 python3 -m venv .venv
 source .venv/bin/activate
 ```
-**OBS** para que os comandos fucnioname a contento é necessário ter o python instalado, mais informações [aqui](https://www.python.org/downloads/)
+**OBS** para que os comandos funcionem a contento é necessário ter o python instalado, mais informações [aqui](https://www.python.org/downloads/)
 
 Apos a execução do comando acima seu shell vai apresentar o (.venv) conforme abaixo: 
 ```bash
@@ -112,7 +112,7 @@ $ ls
 README.MD  app
 
 ```
-Agora vamos criar um arquivo Dockerfile com o seguinte conteúdo: 
+Agora vamos criar um arquivo Dockerfile, no diretório raiz do nosso projeto, com o seguinte conteúdo: 
 ```bash
 ARG PYTHON_VERSION=3.10.12
 FROM python:${PYTHON_VERSION}-slim as base
@@ -178,7 +178,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}
 ```
 
-Antes de fazer o add não esqueça de criar, na raiz do seu repositório os arquivos .gitignore e .dockerignore e inclua, no primeiro tudo que não ir para o repositório no github e no segundo tudo que não deve ser copiado para a imagem. 
+Antes de fazer o add não esqueça de criar, na raiz do seu repositório os arquivos .gitignore e .dockerignore e inclua, no primeiro tudo que não deve ir para o repositório no github e no segundo tudo que não deve ser copiado para dentro da imagem. 
 
 Agora faça o add, o commit e o push para o GitHub. 
 
@@ -194,9 +194,9 @@ Verifique no GitHub se a construção da imagem e o push para o Docker Hub ocorr
 
 * Possuir conta e senha no DockerHub
 * Criar um token no DockerHub [Documentação aqui](https://docs.docker.com/security/for-developers/access-tokens/)
-* Criar no repositório os dois segredos secrets.DOCKERHUB_USERNAME e secrets.DOCKERHUB_TOKEN [Documentação aqui](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions)
+* Criar no repositório do github, os dois segredos: secrets.DOCKERHUB_USERNAME e secrets.DOCKERHUB_TOKEN [Documentação aqui](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions)
 
-Após testar o funcionamento modifique a instrução on para workflow_call ( só pode ser chamado a partir de outro workflow) para que a pipeline não fique rodando em todos os pushs. 
+Após testar o funcionamento modifique a instrução "on" para workflow_call ( só pode ser chamado a partir de outro workflow) para que a pipeline não fique rodando em todos os pushs. 
 
 Para um melhor entendimento dos gatilhos para as actions veja [aqui](https://docs.github.com/pt/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)
 
