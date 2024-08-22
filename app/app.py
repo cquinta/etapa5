@@ -22,9 +22,12 @@ app = FastAPI()
 def on_startup():
     create_db_and_tables()
 
-
 @app.get("/")
-async def root():
+async def (root):
+    return{"message","hello-world"}
+
+@app.get("/host")
+async def gethost():
     message = dict()
     message['hostname'] = os.environ.get('HOSTNAME')
     return {"message": message}
