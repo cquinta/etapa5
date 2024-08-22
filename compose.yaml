@@ -1,20 +1,84 @@
 services:
+  nginx:
+    image: nginx:1.26.1-alpine
+    ports:
+      - 8081:8081
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf
+    depends_on:
+      apiserver:
+        condition: service_healthy
+    restart: always
+
   apiserver:
     build:
       context: .
     image: cquinta/etapa5:latest
     
-    ports:
-      - 8000:8000
+    #ports:
+    #  - 8000:8000
     environment:
-      - APP_VERSION=1.0.2
-      - TOKEN=${TOKEN}
+      APP_VERSION: 1.0.2
+      TOKEN: ${TOKEN}
+      POSTGRES_USER: postgres
+      POSTGRES_DB: heroes
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+      POSTGRES_SERVER: postgres
     env_file:
       - ./vars/dev.env
     configs: 
       - source: my_config
         target: /app/config-dev.yaml
+    secrets:
+      - pg_password
+    depends_on:
+      - postgres
+
+    healthcheck:
+      test: ["CMD", "curl", "-f" , "http://localhost:8000/"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+      
+        
+  
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+
+    secrets:
+      - pg_password
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: heroes
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+      DB_HOST: 0.0.0.0
+
+  dbadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=carlos.quintanilha@prof.infnet.edu.br
+      - PGADMIN_DEFAULT_PASSWORD_FILE=/run/secrets/pgadm_password
+    secrets:
+      - pgadm_password
+  
+
+
 
 configs:
   my_config:
     file: ./config-dev.yaml
+  nginx_config:
+    file: ./nginx.conf
+  
+
+secrets:
+  pg_password:
+    file: ./pg_password.txt
+  pgadm_password:
+    file: ./pgadm_password.txt

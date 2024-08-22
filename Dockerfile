@@ -1,5 +1,6 @@
 ARG PYTHON_VERSION=3.10.12
 FROM python:${PYTHON_VERSION}-slim as base
+RUN apt-get update && apt-get install curl -y
 WORKDIR app
 COPY app/requirements.txt .
 RUN pip install -r requirements.txt
