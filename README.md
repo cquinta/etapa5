@@ -1,2 +1,4 @@
-# etapa5
-Inicio 
+# Aplicação Orquestrada com Docker Compose
+
+Ver documentação no diretório docs.
+
