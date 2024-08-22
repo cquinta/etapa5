@@ -1,5 +1,9 @@
 # Incluindo o balanceador de carga
 
+Vamos utilizar o nginx na porta 8081 e fazer com que ele carregue o arquivo de configuração nginx.conf para o diretório /etc/nginx/nginx.conf, através do uso do config conforme explicado anteriormente. 
+
+No compose.yml
+
 ```bash
 services:
   nginx:
@@ -40,7 +44,8 @@ configs:
     file: ./nginx.conf
 
 ```
-No nginx.conf
+Crie um arquivo nginx.conf no diretório raiz do seu projeto com a seguinte configuração.
+
 
 ```bash
 user nginx;
