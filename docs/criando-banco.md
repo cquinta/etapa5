@@ -102,6 +102,36 @@ def read_heroes():
 
 ```
 
+Para persistir os dados no banco de dados adiciono o volume da seguinte forma: 
+
+```
+ postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+
+    secrets:
+      - pg_password
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: heroes
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+      DB_HOST: 0.0.0.0
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+
+
+
+
+
+volumes:
+  db_data:
+
+```
+
+
+
 
 
 
