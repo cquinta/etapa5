@@ -1,6 +1,6 @@
 .venv*
 __pycache__*
 dev.env
-config*
+config
 *password*
 commandos*
